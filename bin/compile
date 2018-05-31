@@ -51,6 +51,10 @@ else
   # like>>    :repo:deb http://cz.archive.ubuntu.com/ubuntu artful main universe
   topic "Adding custom repositories"
   cat $BUILD_DIR/Aptfile | grep -s -e "^:repo:" | sed 's/^:repo:\(.*\)\s*$/\1/g' >> $APT_SOURCES
+  # add custom keyfiles from Aptfile to keyring
+  # like>>    :key:https://etc
+  topic "Adding custom repo keys"
+  cat $BUILD_DIR/Aptfile | grep -s -e "^:key:" | sed 's/^:key:\(.*\)\s*$/\1/g' | apt-key adv --fetch-keys
 fi
 
 APT_OPTIONS="-o debug::nolocking=true -o dir::cache=$APT_CACHE_DIR -o dir::state=$APT_STATE_DIR"
